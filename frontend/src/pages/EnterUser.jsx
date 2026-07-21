@@ -6,8 +6,8 @@ import { ChatContext } from '../context/ChatProvider';
 
 const EnterUser = () => {
   const [formData, setFormData] = useState({
-    conversationId: 'room1',
-    name: 'Mohit',
+    conversationId: '',
+    name: '',
     passphrase: ''
   });
   const navigate = useNavigate();
@@ -54,6 +54,7 @@ const EnterUser = () => {
           <div className="space-y-2">
             <label className="block text-gray-300 font-semibold text-sm">Conversation ID</label>
             <input
+            placeholder='e.g. room1'
               type="text"
               value={formData.conversationId}
               onChange={(e) => setFormData({...formData, conversationId: e.target.value})}
@@ -64,6 +65,7 @@ const EnterUser = () => {
           <div className="space-y-2">
             <label className="block text-gray-300 font-semibold text-sm">Your Name</label>
             <input
+            placeholder='e.g. Rohan'
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({...formData, name: e.target.value})}
@@ -74,6 +76,7 @@ const EnterUser = () => {
           <div className="space-y-2">
             <label className="block text-gray-300 font-semibold text-sm">Shared Passphrase</label>
             <input
+            placeholder="e.g. ***"
               type="password"
               placeholder="Enter passphrase"
               value={formData.passphrase}
