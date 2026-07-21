@@ -5,9 +5,15 @@ import time
 app = Flask(__name__)
 init_db()
 
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"status": "ok"}), 200
+
 @app.route("/messages", methods=["POST"])
 def send_message():
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if data is None:
+        return jsonify({"error": "Invalid JSON body"}), 400
 
     conversation_id = data.get("conversationId")
     sender_name = data.get("senderName")
