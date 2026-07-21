@@ -21,6 +21,11 @@ const EnterUser = () => {
     setName(formData.name);
     setKey(key);
     setConversationId(formData.conversationId);
+
+    sessionStorage.setItem("name",formData.name);
+    sessionStorage.setItem("conversationId",formData.conversationId);
+    sessionStorage.setItem("passphrase",formData.passphrase);
+
     navigate("/chat");
   }
 
