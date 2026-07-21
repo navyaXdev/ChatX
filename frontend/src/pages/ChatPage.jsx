@@ -126,7 +126,7 @@ const ChatPage = () => {
                     <div className="flex items-center gap-2">
                         <Lock size={16} className="text-blue-400" />
                         <h1 className="text-white font-bold text-lg">Secure Chat</h1>
-                        <span className="text-xs text-gray-500 ml-2 font-mono">room1</span>
+                        <span className="text-xs text-gray-500 ml-2 font-mono">{conversationId}</span>
                     </div>
                 </div>
 
