@@ -9,15 +9,19 @@ const ChatPage = () => {
     const { name, key, conversationId, setName, setKey, setConversationId, isLoading } = useContext(ChatContext);
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
+    const messageScrollRef = useRef(null);
     const [messages, setMessages] = useState([
 
     ]);
+    
+    const [isSending,setIsSending] = useState(false);
     // console.log("the username is: ", name)
     // console.log("the key is:",key);
     // console.log("the conversationId is:",conversationId)
 
-
-
+   useEffect(()=>{
+    messageScrollRef?.current?.scrollIntoView({behavior:'smooth'})
+   },[messages])
 
 
     const handleGoBack = () => {
@@ -26,6 +30,7 @@ const ChatPage = () => {
 
     async function handleSendMessage() {
         try {
+            setIsSending(true);
             console.log("the form data is: ", message)
             const latestTime = new Date();
             const formatedTime = formatTime(latestTime);
@@ -58,6 +63,8 @@ const ChatPage = () => {
             console.log("the data is: ", newData)
         } catch (error) {
             console.error("couldn't send message: ", error)
+        }finally{
+            setIsSending(false);
         }
     }
 
@@ -158,6 +165,8 @@ const ChatPage = () => {
                         </div>
                     </div>
                 ))}
+
+                <div ref={messageScrollRef} />
             </main>
 
             <footer className="p-4 bg-[#0f1117] border-t border-gray-800/50">
@@ -165,6 +174,12 @@ const ChatPage = () => {
                     className="max-w-5xl mx-auto flex gap-3"
                 >
                     <input
+                    onKeyDown={(e)=>{
+                        if(isSending) return;
+                        if(e.key==="Enter"){
+                            handleSendMessage();
+                        }
+                    }}
                         type="text"
                         placeholder="Type a message..."
                         value={message}
@@ -172,9 +187,10 @@ const ChatPage = () => {
                         className="flex-1 bg-[#161922] border border-gray-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-gray-600"
                     />
                     <button
+                    disabled={isSending}
                         onClick={handleSendMessage}
                         type="submit"
-                        className="bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white px-6 py-3 rounded-xl flex items-center gap-2 font-bold transition-all active:scale-95 shadow-lg shadow-blue-500/20"
+                        className="bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white px-6 py-3 rounded-xl flex items-center gap-2 font-bold transition-all active:scale-95 shadow-lg shadow-blue-500/20 disabled:cursor-not-allowed disabled:brightness-50"
                     >
                         <Send size={18} />
                         Send
