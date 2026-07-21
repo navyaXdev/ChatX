@@ -73,38 +73,6 @@ Passphrase → PBKDF2 → AES-256-GCM Key → Encrypt/Decrypt
 
 ---
 
-## 📁 Project Structure
-
-```
-frontend/
-└── src
-    │
-    ├── context
-    │   └── ChatProvider.jsx
-    │
-    ├── pages
-    │   ├── EnterUser.jsx
-    │   └── ChatPage.jsx
-    │
-    ├── route
-    │   └── ProtectedRoute.jsx
-    │
-    ├── utils
-    │   ├── cryptoUtils.js
-    │   └── timeFormatter.js
-    │
-    ├── App.jsx
-    └── main.jsx
-
-backend/
-├── app.py
-├── db.py
-├── requirements.txt
-└── chatx.db
-```
-
----
-
 ## Data Model
 
 **`messages` table**
