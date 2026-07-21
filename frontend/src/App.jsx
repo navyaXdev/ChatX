@@ -1,9 +1,25 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
+import EnterUser from './pages/EnterUser'
+import ChatPage from './pages/ChatPage'
+import ProtectedRoute from './route/ProtectedRoute'
 
 function App() {
 
   return (
-   <div className='bg-red-400'>hello world</div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<EnterUser />} />
+
+        <Route path='/chat' element={
+
+          <ProtectedRoute>
+
+            <ChatPage />
+          </ProtectedRoute>
+        } />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
