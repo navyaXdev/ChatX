@@ -53,6 +53,18 @@ def get_messages():
     messages = [dict(row) for row in rows]
     return jsonify(messages), 200
 
+@app.route("/messages", methods=["DELETE"])
+def delete_conversation():
+    conversation_id = request.args.get("conversationId")
+    if not conversation_id:
+        return jsonify({"error": "conversationId is required"}), 400
+
+    conn = get_connection()
+    conn.execute("DELETE FROM messages WHERE conversationId = ?", (conversation_id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"status": "deleted"}), 200
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
