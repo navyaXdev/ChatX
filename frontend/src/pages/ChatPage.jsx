@@ -51,7 +51,7 @@ const ChatPage = () => {
             })
 
             if (res.ok) {
-                setMessages((state) => [...state, newData]);
+                // setMessages((state) => [...state, newData]);
                 setMessage("");
             }
             console.log("the payload is:", payload)
@@ -69,13 +69,13 @@ const ChatPage = () => {
                 console.log("the response is: ", response)
                 if (!response.ok) return;
                 const msgs = await response.json();
+                console.log("the messages are: ",msgs)
 
                 for (const msg of msgs) {
                     lastMessageId.current = Math.max(
                         lastMessageId.current,
                         msg.messageId
                     );
-                    if (msg.senderName === name) continue;
 
                     let text;
                     try {
@@ -96,7 +96,7 @@ const ChatPage = () => {
                         sender: msg.senderName,
                         time: formatTime(new Date(msg.timestamp * 1000)),
                         text,
-                        isMe: false
+                        isMe: msg.senderName===name
                     }]);
                 }
 
