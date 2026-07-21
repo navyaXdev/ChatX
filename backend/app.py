@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from db import get_connection, init_db
 import time
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 init_db()
 
 @app.route("/health", methods=["GET"])
