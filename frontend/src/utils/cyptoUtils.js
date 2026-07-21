@@ -1,8 +1,11 @@
-
 export async function deriveKey(passphrase, conversationId) {
   const encoder = new TextEncoder();
 
   const passphraseBytes = encoder.encode(passphrase);
+
+  // Hash conversationId first — must match what the other client uses,
+  // or you'll each derive a different key from the same passphrase.
+  const saltBuffer = await crypto.subtle.digest("SHA-256", encoder.encode(conversationId));
 
   const keyMaterial = await crypto.subtle.importKey(
     "raw",
@@ -15,7 +18,7 @@ export async function deriveKey(passphrase, conversationId) {
   const key = await crypto.subtle.deriveKey(
     {
       name: "PBKDF2",
-      salt: encoder.encode(conversationId), 
+      salt: saltBuffer,   // ← use the hashed salt instead of raw bytes
       iterations: 100000,
       hash: "SHA-256",
     },
@@ -30,7 +33,6 @@ export async function deriveKey(passphrase, conversationId) {
 
   return key;
 }
-
 
 // Encrypt a plaintext message using the derived AES-GCM key.
 export async function encryptMessage(message, key) {

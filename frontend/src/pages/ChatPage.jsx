@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState,useRef } from 'react';
 import { ArrowLeft, Lock, Send } from 'lucide-react';
 import { ChatContext } from '../context/ChatProvider';
 import { useNavigate } from 'react-router-dom';
@@ -10,27 +10,7 @@ const ChatPage = () => {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
     const [messages, setMessages] = useState([
-        {
-            id: 1,
-            sender: 'Dinesh',
-            time: '10:01',
-            text: 'Hey, ready to test the relay?',
-            isMe: false,
-        },
-        {
-            id: 2,
-            sender: 'Me',
-            time: '10:02',
-            text: 'Yes, encrypted blobs are flying 🚀',
-            isMe: true,
-        },
-        {
-            id: 3,
-            sender: 'Dinesh',
-            time: '10:03',
-            text: "Check the DB — it's all gibberish!",
-            isMe: false,
-        },
+
     ]);
     // console.log("the username is: ", name)
     // console.log("the key is:",key);
@@ -70,8 +50,10 @@ const ChatPage = () => {
                 body: JSON.stringify(payload)
             })
 
-
-            setMessages((state) => [...state, newData])
+            if (res.ok) {
+                setMessages((state) => [...state, newData]);
+                setMessage("");
+            }
             console.log("the payload is:", payload)
             console.log("the data is: ", newData)
         } catch (error) {
@@ -79,17 +61,20 @@ const ChatPage = () => {
         }
     }
 
+    const lastMessageId = useRef(0);
     useEffect(() => {
-        let lastMessageId = 0;
         const poll = async () => {
             try {
-                const response = await fetch(`https://chatx-pfs9.onrender.com/messages?conversationId=${conversationId}&since=${lastMessageId}`);
+                const response = await fetch(`https://chatx-pfs9.onrender.com/messages?conversationId=${conversationId}&since=${lastMessageId.current}`);
                 console.log("the response is: ", response)
                 if (!response.ok) return;
                 const msgs = await response.json();
 
                 for (const msg of msgs) {
-                    lastMessageId = Math.max(lastMessageId, msg.messageId)
+                    lastMessageId.current = Math.max(
+                        lastMessageId.current,
+                        msg.messageId
+                    );
                     if (msg.senderName === name) continue;
 
                     let text;
