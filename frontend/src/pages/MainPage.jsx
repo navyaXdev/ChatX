@@ -110,7 +110,7 @@ const MainPage = () => {
       {/* Footer */}
       <footer className="py-12 border-t border-purple-500/10 text-center">
         <p className="text-purple-100/40 text-xs tracking-tight">
-          ChatX · Private by design · © 2024
+          ChatX · Private by design · © 2026
         </p>
       </footer>
     </div>
